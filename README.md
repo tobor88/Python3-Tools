@@ -11,7 +11,8 @@ Python Reverse Shell Scripts
 __py_reverse_shell_listener.py__ opens a listening port you define. If no port is defined the default is 8089 as that is my favorite at the moment
 Below is how to execute the script. 
 ```python
-python3 py_reverse_shell_listener.py 8089
+python3 py_reverse_shell_listener.py
+# Edit the contents of this file to change the listening port
 ```
 __py_reverse_shell_connect.py__ can be used to connect to a listening port. This does not neccessarily need to be used to connect to the above python listener however it does work.
 ```python
