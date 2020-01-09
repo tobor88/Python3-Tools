@@ -3,6 +3,8 @@ This is a collection of tools InfoSec people may use.
 - __fibonnaci.py__ is a simple function that InfoSec people would not use. I just really like it is all
 - __porttest.py__ is used for testing whether a port is open on a remote machine.
 - __pwd_generator.py__ is for quickly generating a password consisting of random characters for situtaions you may want to generate a password without entering a password manager GUI. 
+- __py_portscanner.py__ I plan on making my baby as a great way for testing for open ports when python3 is available on a target
+- __porttest.py__ simple tool that was great for met in getting started in working with sockets
 
 Python Reverse Shell Scripts
 - __py_reverse_shell_connect.py__
@@ -18,4 +20,12 @@ __py_reverse_shell_connect.py__ can be used to connect to a listening port. This
 ```python
 python3 py_reverse_shell_connect.py
 # Once this is executed you will be prompted for the listening ipv4 address and port
+```
+
+![alt text](https://raw.githubusercontent.com/tobor88/Python3-Tools/master/portscanner.png "Py Port Scanner")
+
+As can be seen from the image above, py_portscanner.py uses the following format. These examples scan all ports on the defined host.
+```python
+python3 .\py_portscanner.py <ipv4 address>
+python3 .\py_portscanner.py 192.168.0.1
 ```
