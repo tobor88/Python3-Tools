@@ -1,25 +1,36 @@
-import socket
-
-ip = str(input("Enter the ip: "))
-
-try:
-    socket.inet_aton(ip)
-except socket.error as msg:
-    print("A valid ipv4 address was not defined {}".format(msg)) # This may need to be changed to + str(msg) depending on your python3 version
-
-port = int(input("Enter the port: "))
-# Validate port value
-def test_port(n):
-    if n in range(1, 65535):
-        print()
-    else:
-        print("A valid port number was not specified")
- 
-test_port(port)
+import sys, socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ip = str(input("IPv4 address of target: "))
 
-if s.connect((ip, port)):
-   print("Port " + port + " is closed. BUMMER")
-else:
-   print("Port " + port + " is open. HOORAY!")
+# Ensure IPv4 address is valid
+def valid_ip(ip):
+    if ip.count(".") != 3:
+        return False
+        sys.exit(1)
+    elif ip == "":
+        return False
+        sys.exit(1)
+    else:
+        split_ip = ip.split(".")
+        slice_ip = [int(n) for n in split_ip[1:]]
+        head = slice_ip[0]
+        return all(u >= head for u in slice_ip)
+valid_ip(ip)
+
+# Connect to port
+def port_connect(ip, port):
+    try:
+        s.connect((ip, port))
+        return True
+    except:
+        return None
+
+# Check port range
+for port in range(1, 10000):
+    value = port_connect(ip, port)
+    if value == None:
+        pass
+    else:
+        print("Port {} is open".format(port))
+        break
