@@ -6,10 +6,10 @@ class PortScanner:
         self.ports = ports
 
     def scan_tcp_port(self, port):
-        connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        connection.settimeout(0.3)
-        yield connection.connect_ex((self.ip, port)), port
-        connection.close()
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(0.3)
+        yield s.connect_ex((self.ip, port)), port
+        s.close()
 
     def scan_ports(self):
         for port in self.ports:
@@ -17,8 +17,8 @@ class PortScanner:
 
     def host_up(self):
         try:
-            connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            connection.connect_ex((self.ip, 80))
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect_ex((self.ip, 80))
             return True
         except socket.timeout:
             return True
@@ -28,12 +28,12 @@ class PortScanner:
 
 def main(ip, ports=range(1, 65536)):
     message = """
-    ============================================================================
-    |  OSBORNEPRO                                                              |
-    ============================================================================
-    Please insert a IP address that you want to scan for open and closed ports.
-    The range of ports scanned is 1-65535.
-    """
+============================================================================
+|  OSBORNEPRO                                                              |
+============================================================================
+Scanning IP Address for open ports. Only open ports will be displayed.
+All ports are scanned by default (1-65535)
+"""
     print(message)
 
     scanner = PortScanner(ip, ports)
@@ -41,9 +41,11 @@ def main(ip, ports=range(1, 65536)):
         print("Host is down")
         return
 
-    for connection, port in scanner.scan_ports():
-        connection = "UP" if connection == 0 else "DOWN"
-        print(f"Port {port} is {connection}") # Log result
+    for s, port in scanner.scan_ports():
+        if s == 0:
+            print(f"[*] Port {port} is OPEN")
+        else:
+            pass
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
