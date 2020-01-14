@@ -1,11 +1,11 @@
 # This script is used to generate a password of random characters
 import string
-import random
+import secrets 
 
 
 def pwd_gen(n):
     chars = string.ascii_letters + string.digits + string.punctuation
-    return ''.join(random.choice(chars) for i in range(n))
+    return ''.join(secrets.choice(chars) for i in range(n))
 
 def validate_num(num):
     if (num.isdigit()):
