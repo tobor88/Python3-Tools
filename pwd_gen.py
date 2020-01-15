@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This script is used to generate a password of random characters
 import sys
 import string
@@ -16,7 +17,11 @@ def validate_num(num):
         print("Value error occured. Enter a valid number. Example: 18")
         sys.exit(1)
 
+def main(num)
+    n = validate_num(num)
+    password = pwd_gen(n)
+    print(password)
+    
 num = input("Enter a number to define the length of the password: ")
-n = validate_num(num)
-password = pwd_gen(n)
-print(password)
+
+main(num)
