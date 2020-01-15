@@ -93,7 +93,7 @@ All ports are scanned by default (1-65535).
     print(message)
     
     
-    scanner = PortScanner(ip, ports)
+    scanner = PortScanner(host, ports)
     ports = scanner.parseports(ports)
     
     if not scanner.valid_ip(host):
@@ -127,6 +127,6 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         ip = sys.argv[1]
         ports = sys.argv[2]
-        main(ip,ports)
+        main(ip, ports)
 
 main()
