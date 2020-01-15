@@ -93,7 +93,7 @@ All ports are scanned by default (1-65535).
     print(message)
     
     
-    scanner = PortScanner(ipv4, ports)
+    scanner = PortScanner(ip, ports)
     ports = scanner.parseports(ports)
     
     if not scanner.valid_ip(host):
