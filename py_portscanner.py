@@ -92,8 +92,9 @@ All ports are scanned by default (1-65535).
 """
     print(message)
     
-    ports = parseports(ports)
+    
     scanner = PortScanner(ipv4, ports)
+    ports = scanner.parseports(ports)
     
     if not scanner.valid_ip(host):
         print("A valid ipv4 address was not defined. Checking for connectivity... ")
