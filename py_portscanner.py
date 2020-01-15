@@ -81,7 +81,7 @@ class PortScanner:
                 raise ValueError('Ports must be between 0 and 65535')
             return tuple(set(portstring))
         
-def main(ipv4, *args):  # Main function
+def main(*args):  # Main function
     """This is the main function that is used in combine the other created functions."""
     message = """
 ============================================================================
@@ -125,7 +125,7 @@ if __name__ == '__main__':
         "12345,54321,2020,2121,2525,65535,666,1337,31337,8181,6969")
     if len(sys.argv) == 2:
         ip = sys.argv[1]
-        ports = ''.join(sys.argv[2:]
+        ports = sys.argv[2]
         main(ip,ports)
 
 main()
