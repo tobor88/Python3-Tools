@@ -17,7 +17,7 @@ def validate_num(num):
         print("Value error occured. Enter a valid number. Example: 18")
         sys.exit(1)
 
-def main(num)
+def main(num):
     n = validate_num(num)
     password = pwd_gen(n)
     print(password)
