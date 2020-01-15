@@ -9,6 +9,21 @@ class PortScanner:
         self.ip = ip
         self.ports = ports
 
+
+    def valid_ip(ip):  # Validate the ipv4 address given is valid
+        if ip.count(".") != 3:
+            return False
+            sys.exit(1)
+        elif ip == "":
+            return False
+            sys.exit(1)
+        else:
+            split_ip = ip.split(".")
+            slice_ip = [int(n) for n in split_ip[1:]]
+            head = slice_ip[0]
+            return all(u >= head for u in slice_ip)
+        
+        
     def scan_tcp_port(self, port):  # Create socket for connectin to ports and issue connect
         """This function creates the socket and connects to it."""
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,11 +31,29 @@ class PortScanner:
         yield s.connect_ex((self.ip, port)), port
         s.close()
 
+        
+    # The below function is used for testing whether or not a single port is open.
+    def check_port(port):
+        def port_connect(ip, port):
+            try:
+                s.connect((ip, port))
+                return True
+            except:
+                return None
+        result = port_connect(ip, port)
+        if result is None:
+            print("Port {} is closed".format(port))  # Replace this with pass
+        else:                                        # when you scan a port range
+            print("Port {} is open".format(port))
+            sys.exit(1)
+        
+        
     def scan_ports(self):  # Connect to all ports in the range
         """This function connects to all ports in the range."""
         for port in self.ports:
             yield from self.scan_tcp_port(port)
 
+            
     def host_up(self):  # Check whether or not the host is up
         """Verifies the target host is accessible by testing a connection to port 80."""
         try:
