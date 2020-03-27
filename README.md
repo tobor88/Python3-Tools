@@ -1,6 +1,14 @@
 # Python3-Tools
 This is a collection of tools InfoSec people may use. 
 - __fibonnaci.py__ is a simple function that InfoSec people would not use. I just really like it is all
+- __hex2num.py__ I am hate doing hexadecimal math. This is a command I made to help me calculate the offset in a buffer overflow when I have a return address of 0x4c. Calculating 0x4c to decimal is shown in the command below
+```python3
+./hex2num.py
+# RESULTS OF RUNNING ABOVE COMMAND
+Enter a hexadecimal value to convert to decimal: 4c # Enter 4c not 0x4c
+4c in Decimal = 76
+```
+
 - __porttest.py__ is used for testing whether a port is open on a remote machine.
 - __pwd_generator.py__ is for quickly generating a password consisting of random characters for situtaions you may want to generate a password without entering a password manager GUI. 
 - __py_portscanner.py__ I plan on making my baby as a great way for testing for open ports when python3 is available on a target
