@@ -1,7 +1,7 @@
 # Python3-Tools
 This is a collection of tools InfoSec people may use. 
 - __fibonnaci.py__ is a simple function that InfoSec people would not use. I just really like it is all
-- __hex2num.py__ I am hate doing hexadecimal math. This is a command I made to help me calculate the offset in a buffer overflow when I have a return address of 0x4c. Calculating 0x4c to decimal is shown in the command below
+- __hex2num.py__ I hate doing hexadecimal math. This is a command I made to help me calculate the offset in a buffer overflow when I have a return address of 0x4c. Calculating 0x4c to decimal is shown in the command below
 ```python3
 ./hex2num.py
 # RESULTS OF RUNNING ABOVE COMMAND
