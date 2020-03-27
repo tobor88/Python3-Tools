@@ -8,7 +8,13 @@ This is a collection of tools InfoSec people may use.
 Enter a hexadecimal value to convert to decimal: 4c # Enter 4c not 0x4c
 4c in Decimal = 76
 ```
-
+- __hex2text.py__ This command is meant to easily calculate the text value of hexadecimal value to string. 
+```python3
+./hex2text.py
+# RESULTS OF RUNNING ABOVE COMMAND
+Enter the hexadecimal value you want to conver to text: 42306142
+B0aB
+```
 - __porttest.py__ is used for testing whether a port is open on a remote machine.
 - __pwd_generator.py__ is for quickly generating a password consisting of random characters for situtaions you may want to generate a password without entering a password manager GUI. 
 - __py_portscanner.py__ I plan on making my baby as a great way for testing for open ports when python3 is available on a target
