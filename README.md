@@ -8,7 +8,7 @@ This is a collection of tools InfoSec people may use.
 Enter a hexadecimal value to convert to decimal: 4c # Enter 4c not 0x4c
 4c in Decimal = 76
 ```
-- __hex2text.py__ This command is meant to easily calculate the text value of hexadecimal value to string. 
+- __hex2text.py__ This command is meant to easily calculate the text value of hexadecimal value to string. I found this useful when using msf-pattern_create to crash an application and discover the registries EIP value of the crash.
 ```python3
 ./hex2text.py
 # RESULTS OF RUNNING ABOVE COMMAND
