@@ -18,7 +18,15 @@ B0aB
 - __porttest.py__ is used for testing whether a port is open on a remote machine.
 - __pwd_generator.py__ is for quickly generating a password consisting of random characters for situtaions you may want to generate a password without entering a password manager GUI. 
 - __py_portscanner.py__ I plan on making my baby as a great way for testing for open ports when python3 is available on a target
-- __porttest.py__ simple tool that was great for met in getting started in working with sockets
+- __porttest.py__ simple tool that was great for met in getting started in working with sockets. It can have values piped to it for scripting and it can be used with proxychains.
+```python3
+printf "10.1.1.27\n\r80\n\r" | proxychains python3 porttest.py
+# OR
+python3 porttest.py
+IPv4 address of target: 10.1.1.27    
+Enter port number to test: 8000
+Port 8000 is closed
+```
 
 Python Reverse Shell Scripts
 - __py_reverse_shell_connect.py__
