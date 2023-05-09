@@ -1,5 +1,29 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+#---------------------------------------------------------------------------------------------------
+# Below are the steps I suggest carrying out in order to set this up and utilzie this command
+#mkdir -P /root/scripts/.virtual
+#cd /root/scripts/.virtual
+#python3 -m venv get_azkv_secret
+#source /root/scripts/.virtual/get_azkv_secret/bin/activate
+#echo argparse >> /root/scripts/.virtual/requirements.txt
+#echo azure-common==1.1.28 >> /root/scripts/.virtual/requirements.txt
+#echo azure-identity==1.10.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-core==1.24.2 >> /root/scripts/.virtual/requirements.txt
+#echo azure-keyvault==1.1.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-keyvault-certificates==4.6.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-keyvault-keys==4.7.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-keyvault-secrets==4.6.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-mgmt-compute==27.2.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-mgmt-core==1.3.2 >> /root/scripts/.virtual/requirements.txt
+#echo azure-mgmt-resource==21.1.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-mgmt-storage==20.0.0 >> /root/scripts/.virtual/requirements.txt
+#echo azure-storage-blob==12.13.1 >> /root/scripts/.virtual/requirements.txt
+#pip3 install -r /root/scripts/.virtual/requirements.txt
+#find /root/scripts/.virtual -type d -exec umask 077 {} \;
+#chmod o-rwx -R /root/scripts/.virtual
+#chmod g-rwx -R /root/scripts/.virtual
+#---------------------------------------------------------------------------------------------------
 import sys
 import argparse
 from azure.keyvault import KeyVaultClient
