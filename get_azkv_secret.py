@@ -1,32 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-#---------------------------------------------------------------------------------------------------
-# Below are the steps I suggest carrying out in order to set this up and utilzie this command
-#mkdir -P /root/scripts/.virtual
-#cd /root/scripts/.virtual
-#python3 -m venv get_azkv_secret
-#source /root/scripts/.virtual/get_azkv_secret/bin/activate
-#echo argparse >> /root/scripts/.virtual/requirements.txt
-#echo azure-common==1.1.28 >> /root/scripts/.virtual/requirements.txt
-#echo azure-identity==1.10.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-core==1.24.2 >> /root/scripts/.virtual/requirements.txt
-#echo azure-keyvault==1.1.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-keyvault-certificates==4.6.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-keyvault-keys==4.7.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-keyvault-secrets==4.6.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-mgmt-compute==27.2.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-mgmt-core==1.3.2 >> /root/scripts/.virtual/requirements.txt
-#echo azure-mgmt-resource==21.1.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-mgmt-storage==20.0.0 >> /root/scripts/.virtual/requirements.txt
-#echo azure-storage-blob==12.13.1 >> /root/scripts/.virtual/requirements.txt
-#pip3 install -r /root/scripts/.virtual/requirements.txt
-#find /root/scripts/.virtual -type d -exec umask 077 {} \;
-#chmod o-rwx -R /root/scripts/.virtual
-#chmod g-rwx -R /root/scripts/.virtual
-#---------------------------------------------------------------------------------------------------
 import sys
 import argparse
-from azure.keyvault import KeyVaultClient
+import os
+import subprocess
 from azure.identity import CertificateCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -72,31 +49,48 @@ usage="""
 
 """
 
-argumentList = sys.argv[1:]
-options = "svtcf:"
-long_options = ["secret","vaultname","tenantid","clientid","filepath"]
-parser = argparse.ArgumentParser(description="Retrieve a secret value from the Azure Key Vault")
-parser.add_argument("-s", "--secret", help = "Enter the Azure Secret Name you wish to retrieve the value of", required=True)
-parser.add_argument("-v", "--vaultname", help = "Enter the Azure Key Vault Name containing the secret you wish to retrieve the value of", required=True)
-parser.add_argument("-t", "--tenantid", help = "Enter the Azure Tenant ID the secret is in", required=True)
-parser.add_argument("-c", "--clientid", help = "Enter the Azure Client ID for the SPN", required=True)
-parser.add_argument("-f", "--filepath", help = "Enter the path to the certificate file used for authentication (It needs Base64 formatting with public cert followed by the private key)", required=True)
-args = parser.parse_args()
-KVUri = str("https://{}.vault.azure.net".format(args.vaultname))
-credential = CertificateCredential(
-        args.tenantid, args.clientid, args.filepath, send_certificate_chain=True
-)
+def ensure_venv():
+    """Ensure the script is running inside a virtual environment."""
+    if sys.prefix == sys.base_prefix:
+        print("[!] Not running inside a virtual environment.")
+        venv_path = os.path.join(os.path.dirname(__file__), ".venv")
+        print(f"[*] Creating virtual environment at {venv_path} ...")
+        subprocess.run([sys.executable, "-m", "venv", venv_path], check=True)
+        print("[*] Installing dependencies...")
+        subprocess.run([f"{venv_path}/bin/pip", "install", "-q",
+                        "azure-identity>=1.10.0", "azure-keyvault-secrets>=4.6.0"], check=True)
+        print("[+] Virtual environment setup complete.")
+        print(f"[*] Re-run this script using: source {venv_path}/bin/activate && python {__file__}")
+        sys.exit(0)
 
 
-# Connecting to Azure Key Vault
-client = KeyVaultClient(credential)
-client = SecretClient(vault_url=KVUri, credential=credential)
-
-
-# Retrieving secret
-try:
-        retrieved_secret = client.get_secret(args.secret)
-        print(retrieved_secret.value)
-except:
-        print("[x] Unable to retrieve Secret Name {} from Key Vault {} in the specified Azure Tenant".format(args.secret, args.vaultname))
+def get_secret(secret_name, vault_name, tenant_id, client_id, cert_path):
+    """Retrieve secret value from Azure Key Vault."""
+    kv_uri = f"https://{vault_name}.vault.azure.net"
+    try:
+        credential = CertificateCredential(tenant_id, client_id, cert_path, send_certificate_chain=True)
+        client = SecretClient(vault_url=kv_uri, credential=credential)
+        secret = client.get_secret(secret_name)
+        return secret.value
+    except Exception as e:
+        print(f"[x] Error retrieving secret: {e}")
         sys.exit(1)
+
+
+def main():
+    ensure_venv()
+
+    parser = argparse.ArgumentParser(description="Retrieve a secret value from the Azure Key Vault")
+    parser.add_argument("-s", "--secret", required=True, help="Azure Secret Name to retrieve")
+    parser.add_argument("-v", "--vaultname", required=True, help="Azure Key Vault Name")
+    parser.add_argument("-t", "--tenantid", required=True, help="Azure Tenant ID")
+    parser.add_argument("-c", "--clientid", required=True, help="Azure Client ID")
+    parser.add_argument("-f", "--filepath", required=True, help="Path to certificate (Base64 PEM format)")
+    args = parser.parse_args()
+
+    secret_value = get_secret(args.secret, args.vaultname, args.tenantid, args.clientid, args.filepath)
+    print(secret_value)
+
+
+if __name__ == "__main__":
+    main()
